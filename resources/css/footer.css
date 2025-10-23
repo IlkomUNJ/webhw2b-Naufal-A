@@ -1,0 +1,64 @@
+/* File: resources/css/footer.css */
+footer {
+  background-color: #302f2f; /* Warna latar belakang gelap */
+  color: #e0e0e0; /* Warna teks agak terang */
+  padding: 30px 0; /* Tambah padding atas/bawah */
+  margin-top: 50px; /* Sedikit lebih banyak jarak dari konten utama */
+  font-size: 14px;
+}
+
+footer .container {
+  max-width: 1200px; /* Batasi lebar max container */
+  margin: 0 auto; /* Tengahkankan container */
+  padding: 0 20px; /* Padding kiri/kanan */
+  display: flex;
+  justify-content: space-between; /* Kiri dan kanan terpisah */
+  align-items: center; /* Tengah secara vertikal */
+  flex-wrap: wrap; /* Biarkan wrap di layar kecil */
+  gap: 20px; /* Jarak jika wrapping terjadi */
+}
+
+.footer-left h2 {
+  margin: 0 0 8px; /* Sedikit jarak bawah dari judul */
+  font-size: 20px; /* Ukuran judul */
+  color: #ffffff; /* Warna judul putih */
+}
+
+.footer-left p {
+  margin: 0;
+  color: #bdbdbd; /* Warna teks deskripsi lebih lembut */
+}
+
+.footer-right {
+  display: flex; /* Gunakan flexbox untuk ikon sosial media */
+  gap: 15px; /* Jarak antar ikon */
+  align-items: center; /* Pastikan ikon sejajar */
+}
+
+.footer-right a {
+  display: inline-block; /* Agar transisi bekerja */
+}
+
+.footer-right img {
+  width: 24px; /* Ukuran ikon sedikit lebih kecil */
+  height: 24px;
+  opacity: 0.8; /* Buat sedikit transparan */
+  transition: opacity 0.2s ease; /* Transisi halus saat hover */
+}
+
+.footer-right img:hover {
+  opacity: 1; /* Kembali normal saat hover */
+  filter: none; /* Hapus filter brightness sebelumnya */
+}
+
+/* Responsiveness (opsional) */
+@media (max-width: 768px) {
+  footer .container {
+    flex-direction: column; /* Susun vertikal di layar kecil */
+    text-align: center; /* Tengahkankan teks */
+  }
+
+  .footer-left {
+    margin-bottom: 15px; /* Jarak bawah jika vertikal */
+  }
+}

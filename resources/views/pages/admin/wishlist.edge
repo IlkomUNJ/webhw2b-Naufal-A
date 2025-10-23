@@ -1,0 +1,28 @@
+@layout.admin({ title: 'Semua Wishlist' })
+  @slot('main')
+    <head>
+       <link rel="stylesheet" href="/resources/css/wishlist-style.css" />
+    </head>
+    <body>
+       <div class="wishlist-container">
+        <h2>Semua Wishlist Pengguna</h2> 
+
+        @if(wishlistItems && wishlistItems.length > 0)
+          @each(item in wishlistItems)
+            <div class="wishlist-item">
+               
+               <img src="{{ item.menuItem?.imageUrl || '/resources/media/menu/default.jpg' }}" alt="{{ item.menuItem?.name }}">
+              <div class="wishlist-item-info">
+                <h3>{{ item.menuItem?.name }}</h3>
+                <div class="price">Rp {{ item.menuItem?.price.toLocaleString('id-ID') }}</div>
+                 <small>Ditambahkan pada: {{ item.createdAt.toLocaleString() }}</small>
+              </div>
+            </div>
+           @endeach
+        @else
+          <p class="empty-wishlist">Belum ada item di wishlist manapun.</p>
+        @endif
+      </div>
+    </body>
+  @endslot
+@end

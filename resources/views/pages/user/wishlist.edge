@@ -1,0 +1,41 @@
+@layout.main({ title: 'Wishlist Saya' })
+  @slot('main')
+    <head>
+        <link rel="stylesheet" href="/resources/css/wishlist-style.css" />
+    </head>
+    <body>
+      <div class="wishlist-container">
+        <h2>Wishlist Saya</h2>
+
+         {{-- Tampilkan Flash Messages --}}
+        @if(flashMessages.has('success'))
+          <div class="flash-message flash-success">{{ flashMessages.get('success') }}</div>
+        @elseif(flashMessages.has('error'))
+          <div class="flash-message flash-error">{{ flashMessages.get('error') }}</div>
+        @elseif(flashMessages.has('info')) 
+          <div class="flash-message flash-info">{{ flashMessages.get('info') }}</div>
+        @endif
+
+        @if(wishlistItems && wishlistItems.length > 0)
+          @each(item in wishlistItems)
+            <div class="wishlist-item">
+              <img src="{{ item.menuItem?.imageUrl || '/resources/media/menu/default.jpg' }}" alt="{{ item.menuItem?.name || 'Item Menu' }}">
+              <div class="wishlist-item-info">
+                <h3>{{ item.menuItem?.name || 'Nama Tidak Tersedia' }}</h3>
+                <div class="price">Rp {{ item.menuItem?.price.toLocaleString('id-ID') || 'Harga Tidak Tersedia' }}</div>
+                 <small>Ditambahkan pada: {{ item.createdAt.toLocaleString() }}</small>
+              </div>
+              {{-- ==== FORM HAPUS DARI WISHLIST ==== --}}
+              <form action="{{ route('wishlist.destroy', { id: item.id }) }}?_method=DELETE" method="POST" class="remove-wishlist-form" onsubmit="return confirm('Hapus item ini dari wishlist?')">
+                 {{ csrfField() }}
+                <button type="submit" class="remove-wishlist-btn">Hapus</button>
+              </form>
+            </div>
+          @endeach
+        @else
+          <p class="empty-wishlist">Wishlist Anda masih kosong.</p>
+        @endif
+      </div>
+    </body>
+  @endslot
+@end

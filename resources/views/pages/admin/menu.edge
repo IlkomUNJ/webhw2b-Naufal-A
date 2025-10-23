@@ -1,0 +1,114 @@
+@layout.admin({ title: 'Admin Menu Management' })
+  @slot('main')
+    <head>
+      <link rel="stylesheet" href="/resources/css/menu-style.css" />
+    </head>
+    <body>
+      <div class="container2">
+        <aside class="sidebar">
+          <h2>Categories</h2>
+          <ul>
+             {{-- Loop kategori dari data --}}
+             @each(category in Object.keys(groupedItems))
+              <li><a href="#{{ category }}">{{ category }}</a></li>
+             @else
+              <li><a href="#Coffe">Coffe</a></li>
+              <li><a href="#Snack">Snack</a></li>
+              <li><a href="#Non-Coffe">Non Coffee</a></li>
+             @endeach
+          </ul>
+        </aside>
+
+        <main class="content">
+
+          {{-- Form Tambah Item --}}
+          <div class="add-item-form">
+            <h3>Tambah Item Menu Baru</h3>
+
+            {{-- Tampilkan Flash Messages --}}
+            @if(flashMessages.has('success'))
+              <div class="flash-message flash-success">{{ flashMessages.get('success') }}</div>
+            @endif
+            @if(flashMessages.has('error'))
+              <div class="flash-message flash-error">{{ flashMessages.get('error') }}</div>
+            @endif
+
+            <form action="{{ route('admin.menu.store') }}" method="POST">
+              {{ csrfField() }}
+
+              <div class="form-group">
+                <label for="name">Nama Item</label>
+                <input type="text" id="name" name="name" value="{{ flashMessages.get('name', '') }}" required>
+                @if(flashMessages.has('errors.name'))
+                  <div class="validation-error">{{ flashMessages.get('errors.name') }}</div>
+                @endif
+              </div>
+
+              <div class="form-group">
+                <label for="price">Harga (Rp)</label>
+                <input type="number" id="price" name="price" step="100" value="{{ flashMessages.get('price', '') }}" required>
+                 @if(flashMessages.has('errors.price'))
+                  <div class="validation-error">{{ flashMessages.get('errors.price') }}</div>
+                @endif
+              </div>
+
+              <div class="form-group">
+                <label for="category">Kategori</label>
+                <select id="category" name="category" required>
+                  <option value="Coffe" {{ flashMessages.get('category') === 'Coffe' ? 'selected' : '' }}>Coffe</option>
+                  <option value="Snack" {{ flashMessages.get('category') === 'Snack' ? 'selected' : '' }}>Snack</option>
+                  <option value="Non-Coffe" {{ flashMessages.get('category') === 'Non-Coffe' ? 'selected' : '' }}>Non-Coffe</option>
+                  {{-- Tambah kategori lain jika perlu --}}
+                </select>
+                 @if(flashMessages.has('errors.category'))
+                  <div class="validation-error">{{ flashMessages.get('errors.category') }}</div>
+                @endif
+              </div>
+
+              <div class="form-group">
+                <label for="description">Deskripsi (Opsional)</label>
+                <textarea id="description" name="description">{{ flashMessages.get('description', '') }}</textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="imageUrl">URL Gambar (Opsional)</label>
+                <input type="text" id="imageUrl" name="imageUrl" value="{{ flashMessages.get('imageUrl', '') }}" placeholder="https://example.com/image.jpg">
+                 @if(flashMessages.has('errors.imageUrl'))
+                  <div class="validation-error">{{ flashMessages.get('errors.imageUrl') }}</div>
+                @endif
+              </div>
+
+              <button type="submit">Tambah Item</button>
+            </form>
+          </div>
+
+          {{-- Tampilkan Item Menu dari Database --}}
+          @each(category in Object.keys(groupedItems))
+            <section id="{{ category }}" class="section">
+              <h2>{{ category }}</h2>
+              <div class="menu-grid">
+                @each(item in groupedItems[category])
+                  <div class="menu-item">
+                    {{-- Gunakan gambar default jika imageUrl tidak ada --}}
+                    <img src="{{ item.imageUrl || '/resources/media/menu/default.jpg' }}" alt="{{ item.name }}" />
+                    <div class="menu-info">
+                      <h3>{{ item.name }}</h3>
+                      <div class="price">Rp {{ item.price.toLocaleString('id-ID') }}</div>
+                      @if(item.description)
+                        <p class="desc">{{ item.description }}</p>
+                      @endif
+                      {{-- Tambahkan tombol Edit/Hapus di sini jika perlu --}}
+                    </div>
+                  </div>
+                @endeach
+              </div>
+            </section>
+          @else
+            <p>Belum ada item menu.</p>
+          @endeach
+
+        </main>
+      </div>
+    </body>
+  @endslot
+@end
